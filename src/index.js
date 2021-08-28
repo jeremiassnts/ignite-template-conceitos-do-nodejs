@@ -79,7 +79,17 @@ app.put('/todos/:id', checksExistsUserAccount, (request, response) => {
 });
 
 app.patch('/todos/:id/done', checksExistsUserAccount, (request, response) => {
-  // Complete aqui
+  const { user } = request.body
+  const { id } = request.params
+
+  const todo = user.todos.find(t => t.id === id)
+  if (!todo) {
+    return response.status(404).json({ "error": "Invalid ToDo Id" })
+  }
+
+  todo.done = true
+
+  return response.send()
 });
 
 app.delete('/todos/:id', checksExistsUserAccount, (request, response) => {
