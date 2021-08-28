@@ -65,7 +65,17 @@ app.post('/todos', checksExistsUserAccount, (request, response) => {
 });
 
 app.put('/todos/:id', checksExistsUserAccount, (request, response) => {
-  // Complete aqui
+  const { title, deadline, user } = request.body
+  const { id } = request.params
+
+  const todo = user.todos.find(t => t.id === id)
+  if (!todo) {
+    return response.status(404).json({ "error": "Invalid ToDo Id" })
+  }
+  todo.title = title
+  todo.deadline = new Date(deadline)
+
+  return response.send()
 });
 
 app.patch('/todos/:id/done', checksExistsUserAccount, (request, response) => {
