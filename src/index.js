@@ -35,8 +35,8 @@ app.post('/users', (request, response) => {
 
   const newuser = {
     id: uuidv4(),
-    name: name,
-    username: username,
+    name,
+    username,
     todos: []
   }
   users.push(newuser)
@@ -50,7 +50,18 @@ app.get('/todos', checksExistsUserAccount, (request, response) => {
 });
 
 app.post('/todos', checksExistsUserAccount, (request, response) => {
-  // Complete aqui
+  const { title, deadline, user } = request.body
+
+  const newtodo = {
+    id: uuidv4(),
+    title: title,
+    done: false,
+    deadline: new Date(deadline),
+    created_at: new Date()
+  }
+  user.todos.push(newtodo)
+
+  return response.status(201).json({ ...newtodo })
 });
 
 app.put('/todos/:id', checksExistsUserAccount, (request, response) => {
